@@ -51,7 +51,7 @@ async fn make_query(store: Store, query: String) -> Result<impl warp::Reply, war
             }
             println!("{:?}", result);
             Ok(warp::reply::with_status(
-                format!("query completed added, {:?}", result),
+                format!("{:?}", result),
                 StatusCode::OK,
             ))
         }
