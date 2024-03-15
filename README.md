@@ -14,6 +14,11 @@ with postman to DB
 
 ```bash
 docker run -it --name httpsql \
+        --env DB_USER={Your db user}   \
+        --env DB_PASSWORD={Your db password}   \
+        --env DB_HOST={Host to db with out http}   \
+        --env DB_PORT={Your db port}   \
+        --env DB_NAME={Name of DB}   \
         -p 4545:4545\
         --detach \
         t1mon1106/http_to_sql
