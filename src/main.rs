@@ -65,10 +65,19 @@ fn row_to_json(row: PgRow) -> HashMap<String, String> {
         let value = row.try_get_raw(col.ordinal()).unwrap();
         let value = match value.is_null() {
             true => "NULL".to_string(),
-            false => match value.as_str() {
-                Ok(val) => val.to_string(),
-                Err(_) => "date created".to_string(),
-            },
+            false => {
+                if value.type_info().to_string() == "INT4" {
+                    let int =
+                        i32::from_ne_bytes(value.as_bytes().unwrap()[0..4].try_into().unwrap());
+                    let converted = i32::to_ne_bytes(int);
+                    converted[3].to_string()
+                } else {
+                    match value.as_str() {
+                        Ok(val) => val.to_string(),
+                        Err(_) => "date created".to_string(),
+                    }
+                }
+            }
         };
         result.insert(col.name().to_string(), value);
     }
